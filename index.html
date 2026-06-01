@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aether // Liquid Glass Portal</title>
+    <!-- Meta Descriptions for SEO -->
+    <meta name="description" content="A premium futuristic dashboard featuring interactive liquid glass physics, 3D holographic hover cards, and advanced glassmorphism aesthetics.">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Global Custom Style System -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- Liquid Canvas Background -->
+    <canvas id="bg-canvas"></canvas>
+    <div class="noise-overlay"></div>
+
+    <!-- Custom Liquid Cursor Nodes -->
+    <div class="custom-cursor" id="custom-cursor"></div>
+    <div class="custom-cursor-glow" id="custom-cursor-glow"></div>
+
+    <!-- Master Application Layout -->
+    <div class="app-container">
+        
+        <!-- Navigation Frosted Sidebar -->
+        <aside class="sidebar glass-panel" id="nav-sidebar">
+            <div class="brand-section">
+                <div class="brand-logo" id="main-brand-logo"></div>
+                <h2 class="brand-name">Aether</h2>
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item active" data-tab="tab-sandbox">
+                    <a href="#sandbox" id="nav-link-sandbox">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>Glass Sandbox</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-tab="tab-music">
+                    <a href="#music" id="nav-link-music">
+                        <i class="fa-solid fa-music"></i>
+                        <span>Music Station</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-tab="tab-tasks">
+                    <a href="#tasks" id="nav-link-tasks">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Task Flow</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-tab="tab-weather">
+                    <a href="#weather" id="nav-link-weather">
+                        <i class="fa-solid fa-cloud-bolt"></i>
+                        <span>Weather Hub</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="user-avatar" id="current-user-avatar"></div>
+                <div class="user-info">
+                    <h4>Subro</h4>
+                    <p>Ideator</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Viewport Content -->
+        <main class="main-viewport" id="viewport-scroll-container">
+            
+            <!-- SECTION 1: GLASS SANDBOX -->
+            <section class="tab-content active" id="tab-sandbox">
+                <header class="viewport-header">
+                    <div class="viewport-title">
+                        <h1 class="text-glow-cyan">Glass Sandbox</h1>
+                        <p>Customize and generate fluid glass background styles in real time.</p>
+                    </div>
+                    <span class="badge badge-cyan">v1.0.4 - Live</span>
+                </header>
+
+                <div class="sandbox-layout">
+                    <!-- Left: Fluid Canvas Preview Frame -->
+                    <div class="canvas-preview-panel glass-panel" id="glass-preview-box">
+                        <div class="liquid-circle-demo" id="liquid-morph-bubble"></div>
+                    </div>
+
+                    <!-- Right: Control Sliders -->
+                    <div class="sandbox-controls-panel glass-panel" id="sandbox-controls-box">
+                        <h3>Configuration Console</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 8px;">Tweak the liquid particles that float in the environment.</p>
+
+                        <!-- Theme Selection -->
+                        <div class="control-group">
+                            <label class="control-label">Color Theme</label>
+                            <div class="theme-selector">
+                                <button class="theme-btn theme-btn-aether active" data-theme="aether">Aether</button>
+                                <button class="theme-btn theme-btn-solis" data-theme="solis">Solis</button>
+                                <button class="theme-btn theme-btn-abyss" data-theme="abyss">Abyss</button>
+                                <button class="theme-btn theme-btn-aurora" data-theme="aurora">Aurora</button>
+                            </div>
+                        </div>
+
+                        <!-- Count slider -->
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Blob Count</span>
+                                <span id="label-count">10</span>
+                            </div>
+                            <input type="range" id="slider-count" min="3" max="25" value="10">
+                        </div>
+
+                        <!-- Speed slider -->
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Flow Speed</span>
+                                <span id="label-speed">1.0x</span>
+                            </div>
+                            <input type="range" id="slider-speed" min="0.1" max="3" step="0.1" value="1.0">
+                        </div>
+
+                        <!-- Opacity slider -->
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Glass Opacity</span>
+                                <span id="label-opacity">45%</span>
+                            </div>
+                            <input type="range" id="slider-opacity" min="0.1" max="0.9" step="0.05" value="0.45">
+                        </div>
+
+                        <!-- Blur slider -->
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Backdrop Blur</span>
+                                <span id="label-blur">40px</span>
+                            </div>
+                            <input type="range" id="slider-blur" min="10" max="100" value="40">
+                        </div>
+
+                        <!-- Generated Code Frame -->
+                        <div class="control-group">
+                            <label class="control-label">Liquid Glass CSS</label>
+                            <div class="code-output-box">
+                                <pre><code id="code-output-css">.glass-panel {
+  background: rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}</code></pre>
+                                <button class="glass-btn copy-btn" id="btn-copy-css">
+                                    <i class="fa-regular fa-copy"></i> Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: MUSIC STATION -->
+            <section class="tab-content" id="tab-music">
+                <header class="viewport-header">
+                    <div class="viewport-title">
+                        <h1 class="text-glow-magenta">Music Station</h1>
+                        <p>Listen to futuristic ambient soundtracks with reactive glass visualizers.</p>
+                    </div>
+                    <span class="badge badge-magenta">Procedural Audio</span>
+                </header>
+
+                <div class="music-grid">
+                    <!-- Left: Player Console -->
+                    <div class="music-player-panel glass-panel" id="music-player-box">
+                        <div class="disc-wrapper">
+                            <div class="liquid-visualizer-ring" id="audio-glow-ring"></div>
+                            <div class="music-disc" id="audio-vinyl-disc"></div>
+                        </div>
+
+                        <div class="song-info">
+                            <h3 class="song-title" id="song-title-label">Ambient Dreamscape</h3>
+                            <p class="song-artist" id="song-artist-label">Synthesizer Engine</p>
+                        </div>
+
+                        <div class="playback-bar">
+                            <input type="range" id="audio-progress" min="0" max="100" value="0">
+                            <div class="time-stamps">
+                                <span id="time-current">0:00</span>
+                                <span id="time-total">0:00</span>
+                            </div>
+                        </div>
+
+                        <div class="music-controls">
+                            <button class="control-btn" id="btn-audio-prev"><i class="fa-solid fa-backward-step"></i></button>
+                            <button class="control-btn control-btn-play" id="btn-audio-play"><i class="fa-solid fa-play"></i></button>
+                            <button class="control-btn" id="btn-audio-next"><i class="fa-solid fa-forward-step"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Right: Frequency Visualizer Visual & Playlist -->
+                    <div class="visualizer-canvas-panel">
+                        <div class="visualizer-card glass-panel" id="visualizer-card-box">
+                            <canvas id="visualizer-canvas"></canvas>
+                            <div style="z-index: 3; position: absolute; pointer-events: none; text-align: center;" id="visualizer-tip">
+                                <i class="fa-solid fa-waveform" style="font-size: 2rem; color: var(--accent-cyan); margin-bottom: 8px;"></i>
+                                <p style="font-size: 0.85rem; color: var(--text-secondary);">Start playback to initialize real-time audio visualization</p>
+                            </div>
+                        </div>
+
+                        <div class="playlist-card glass-panel" id="playlist-box">
+                            <div class="playlist-header">Select Synth Frequency Track</div>
+                            <div class="playlist-tracks" id="playlist-track-container">
+                                <!-- Track list generated in app.js -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: TASK FLOW -->
+            <section class="tab-content" id="tab-tasks">
+                <header class="viewport-header">
+                    <div class="viewport-title">
+                        <h1 class="text-glow-cyan">Task Flow</h1>
+                        <p>Keep track of creative pipelines in a gorgeous glass kanban board.</p>
+                    </div>
+                    <button class="glass-btn glass-btn-primary pulse-glow-cyan" id="btn-add-task">
+                        <i class="fa-solid fa-plus"></i> New Task
+                    </button>
+                </header>
+
+                <div class="task-layout">
+                    <!-- Left: Kanban Board columns -->
+                    <div class="task-board-panel">
+                        <div class="task-columns">
+                            <!-- To Do Column -->
+                            <div class="task-column">
+                                <div class="column-header">
+                                    <span class="column-title"><i class="fa-solid fa-list-ul" style="color: var(--accent-cyan);"></i> Backlog</span>
+                                    <span class="column-count" id="count-todo">0</span>
+                                </div>
+                                <div class="column-list glass-panel" id="col-todo" data-status="todo">
+                                    <!-- Tasks added dynamically -->
+                                </div>
+                            </div>
+                            <!-- In Progress Column -->
+                            <div class="task-column">
+                                <div class="column-header">
+                                    <span class="column-title"><i class="fa-solid fa-spinner" style="color: var(--accent-magenta);"></i> Operations</span>
+                                    <span class="column-count" id="count-progress">0</span>
+                                </div>
+                                <div class="column-list glass-panel" id="col-progress" data-status="progress">
+                                    <!-- Tasks added dynamically -->
+                                </div>
+                            </div>
+                            <!-- Completed Column -->
+                            <div class="task-column">
+                                <div class="column-header">
+                                    <span class="column-title"><i class="fa-solid fa-check-double" style="color: var(--accent-green);"></i> Deployed</span>
+                                    <span class="column-count" id="count-done">0</span>
+                                </div>
+                                <div class="column-list glass-panel" id="col-done" data-status="done">
+                                    <!-- Tasks added dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Productivity Metrics & Pomodoro Focus Timer -->
+                    <div class="task-stat-panel">
+                        <div class="glass-panel" style="padding: 20px;">
+                            <h3 style="font-size: 1rem; margin-bottom: 12px;">Board Accomplishment</h3>
+                            <div class="stat-radial-chart" id="task-chart-box">
+                                <svg class="radial-svg" width="120" height="120">
+                                    <defs>
+                                        <linearGradient id="radialGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stop-color="var(--accent-cyan)" />
+                                            <stop offset="100%" stop-color="var(--accent-magenta)" />
+                                        </linearGradient>
+                                    </defs>
+                                    <circle class="radial-track" cx="60" cy="60" r="45" />
+                                    <circle class="radial-fill" id="radial-progress-circle" cx="60" cy="60" r="45" />
+                                </svg>
+                                <div class="radial-text">
+                                    <span class="radial-number" id="label-percentage">0%</span>
+                                    <span class="radial-label">Done</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel focus-timer" id="pomodoro-box">
+                            <h3 style="font-size: 1rem; text-align: center;">Glass Pomodoro</h3>
+                            <div class="timer-display" id="pomodoro-timer-label">25:00</div>
+                            <div class="timer-buttons">
+                                <button class="glass-btn timer-btn" id="btn-timer-toggle">Start</button>
+                                <button class="glass-btn timer-btn" id="btn-timer-reset">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: WEATHER FORECAST HUB -->
+            <section class="tab-content" id="tab-weather">
+                <header class="viewport-header">
+                    <div class="viewport-title">
+                        <h1 class="text-glow-cyan">Weather Forecast</h1>
+                        <p>Explore hyperbaric predictions for sci-fi dome colonies.</p>
+                    </div>
+                    
+                    <select class="glass-input" id="weather-location-select" style="width: 220px; cursor: none;">
+                        <option value="neo-tokyo">Neo-Tokyo Dome</option>
+                        <option value="elysium">Elysium Station</option>
+                        <option value="atlantic">Atlantic Abyss V</option>
+                    </select>
+                </header>
+
+                <div class="weather-layout">
+                    <!-- Hero Banner Card -->
+                    <div class="weather-hero glass-panel" id="weather-hero-box">
+                        <!-- Simulated weather particles inside -->
+                        <div class="weather-sim-overlay" id="weather-sim-layer"></div>
+                        <canvas class="weather-canvas" id="weather-canvas-layer"></canvas>
+
+                        <div class="weather-hero-content">
+                            <div class="weather-temp-info">
+                                <span class="weather-huge-temp" id="weather-hero-temp">24</span>
+                                <span class="weather-unit">°C</span>
+                                <div class="weather-meta-info">
+                                    <h2 class="weather-city" id="weather-hero-city">Neo-Tokyo Dome</h2>
+                                    <p class="weather-desc" id="weather-hero-desc">Acid Rain Storm</p>
+                                </div>
+                            </div>
+                            
+                            <div class="weather-art-icon" id="weather-art-box">
+                                <div class="glass-sun" id="weather-sun-node"></div>
+                                <div class="glass-cloud" id="weather-cloud-node"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grid metrics -->
+                    <div class="weather-metrics">
+                        <div class="metric-card glass-panel" id="weather-card-wind">
+                            <div class="metric-icon"><i class="fa-solid fa-wind"></i></div>
+                            <div class="metric-data">
+                                <h5>Wind Velocity</h5>
+                                <p id="weather-val-wind">14.8 km/h</p>
+                            </div>
+                        </div>
+                        <div class="metric-card glass-panel" id="weather-card-humidity">
+                            <div class="metric-icon"><i class="fa-solid fa-droplet"></i></div>
+                            <div class="metric-data">
+                                <h5>Humidity Index</h5>
+                                <p id="weather-val-humidity">88%</p>
+                            </div>
+                        </div>
+                        <div class="metric-card glass-panel" id="weather-card-uv">
+                            <div class="metric-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <div class="metric-data">
+                                <h5>Radiation Shield</h5>
+                                <p id="weather-val-uv">Alpha Active</p>
+                            </div>
+                        </div>
+                        <div class="metric-card glass-panel" id="weather-card-pressure">
+                            <div class="metric-icon"><i class="fa-solid fa-gauge-high"></i></div>
+                            <div class="metric-data">
+                                <h5>Atmosphere</h5>
+                                <p id="weather-val-pressure">1.02 Bar</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5 day forecast shelf -->
+                    <div class="weather-forecast-shelf">
+                        <h3 class="shelf-title">Atmospheric Timeline</h3>
+                        <div class="forecast-days" id="weather-days-shelf">
+                            <!-- Injected dynamically in app.js -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals (Add Task dialog) -->
+    <div class="modal-overlay" id="task-modal">
+        <div class="modal-content glass-panel" id="task-modal-box">
+            <div class="modal-header">
+                <h3>Draft Task Card</h3>
+            </div>
+            <div class="modal-body">
+                <div class="control-group">
+                    <label class="control-label">Task Summary</label>
+                    <input type="text" class="glass-input" id="modal-task-desc" placeholder="Explain task pipeline...">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Department / Scope</label>
+                    <select class="glass-input" id="modal-task-category" style="cursor: none;">
+                        <option value="dev">Software Engineering</option>
+                        <option value="design">Aesthetics & Design</option>
+                        <option value="ideas">Conceptual Ideation</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Urgency Weight</label>
+                    <select class="glass-input" id="modal-task-priority" style="cursor: none;">
+                        <option value="low">Standard Priority</option>
+                        <option value="medium">Medium Priority</option>
+                        <option value="high">Critical Priority</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="glass-btn" id="btn-modal-cancel">Cancel</button>
+                <button class="glass-btn glass-btn-primary" id="btn-modal-confirm">Assemble Card</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SVG Gooey Filter Definitions for background merging effects -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <defs>
+            <!-- Standard liquid gooey filter for metaballs -->
+            <filter id="liquid-goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur" />
+                <!-- Threshold matrix converts blurred alpha to sharp border shapes -->
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -10" result="goo" />
+                <feBlend in="SourceGraphic" in2="goo" />
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- Load Custom Logic Modules -->
+    <script src="fluid.js"></script>
+    <script src="tilt.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
